@@ -105,9 +105,9 @@ DEVICE_CLASS_MAPPING = {
 }
 
 STATE_CLASS_MAPPING = {
-    "Energy_Today": "measurement",
-    "Energy_This_Month": "measurement",
-    "Energy_This_Year": "measurement",
+    "Energy_Today": "total_increasing",
+    "Energy_This_Month": "total_increasing",
+    "Energy_This_Year": "total_increasing",
     "Energy_Total": "total_increasing",
     "Voltage": "measurement",
     "Current": "measurement",
