@@ -171,12 +171,12 @@ def publish_discovery(client: mqtt.Client, device_data: dict, plant_data: dict, 
 
             # Skip attributes that don't map to a sensor property (unless it's a timestamp)
             # This check now works correctly even if the panel prefix wasn't "PV"
-            if unit is None and device_class is None and attribute not in ["Update_time", "Server_Time"]:
+            if unit is None and device_class is None and attribute != "Update_time":
                  _LOGGER.debug(f"Skipping discovery for {unique_id} due to missing unit and device_class (Base Attribute: {base_attribute}).")
                  continue
 
             # Ensure timestamps have the correct device class (overrides mapping if needed)
-            if attribute in ["Update_time", "Server_Time"]:
+            if attribute == "Update_time":
                  device_class = "timestamp"
 
             discovery_topic = f"{MQTT_DISCOVERY_PREFIX}/sensor/{unique_id}/config"
@@ -226,8 +226,8 @@ def publish_discovery(client: mqtt.Client, device_data: dict, plant_data: dict, 
         icon = None
 
         # Skip non-sensor attributes, except timestamps
-        if unit is None and device_class is None and attribute not in ["Update_time", "Server_Time"]: continue
-        if attribute in ["Update_time", "Server_Time"]: device_class = "timestamp"
+        if unit is None and device_class is None and attribute != "Update_time": continue
+        if attribute == "Update_time": device_class = "timestamp"
 
         discovery_topic = f"{MQTT_DISCOVERY_PREFIX}/sensor/{unique_id}/config"
         payload = {

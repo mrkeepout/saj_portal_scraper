@@ -37,7 +37,7 @@ options: # User-configurable options
   # Keep microinverters as a string for simplicity in config UI
   microinverters: "YOUR_SN1:Alias1,YOUR_SN2:Alias2"
   inactivity_enabled: true
-  inactivity_start_time: "21:00"
+  inactivity_start_time: "20:00"
   inactivity_end_time: "05:30"
   update_interval_seconds: 240
   data_inactivity_threshold_seconds: 1800 # Default 30 minutes (valor padrão)

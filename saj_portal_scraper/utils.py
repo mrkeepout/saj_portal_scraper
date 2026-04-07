@@ -153,8 +153,9 @@ def aggregate_plant_data(fetched_data: dict | None) -> dict:
         "Energy_Total": round(plant_sum_energy_total, 2),
         "Panel_Power": round(plant_sum_panel_power, 2), # Total power from all panels
         "Update_time": latest_update_time_str,
-        "Server_Time": latest_server_time_str,
     }
+    if latest_server_time_str:
+        aggregated_data["Server_Time"] = latest_server_time_str
     _LOGGER.debug("Aggregator: Aggregated plant data: %s", aggregated_data)
     return aggregated_data
 

@@ -48,7 +48,7 @@ PASSWORD_SELECTOR = 'input[type="password"]'
 COLUMN_MAPPING = {
     "ID": 0,
     "Update_time": 1,
-    "Server_Time": 17,
+    #"Server_Time": 17, -- deprecated
     "Panel_Channel": 3,
     "Panel_Voltage": 4,
     "Panel_Current": 5,
@@ -62,14 +62,13 @@ COLUMN_MAPPING = {
     "Energy_This_Month": 14,
     "Energy_This_Year": 15,
     "Energy_Total": 16,
-    "Strength_Signal": 18,
+    "Strength_Signal": 17,
 }
 
 # --- Sensor Property Mappings (Used for MQTT Discovery) ---
 UNIT_MAPPING = {
     "ID": None,
     "Update_time": None,
-    "Server_Time": None,
     "Panel_Channel": None,
     "Panel_Voltage": "V",
     "Panel_Current": "A",
@@ -89,7 +88,6 @@ UNIT_MAPPING = {
 DEVICE_CLASS_MAPPING = {
     "ID": None,
     "Update_time": "timestamp", # Use string for device class
-    "Server_Time": "timestamp", # Use string for device class
     "Panel_Channel": None,
     "Panel_Voltage": "voltage",
     "Panel_Current": "current",
@@ -107,9 +105,9 @@ DEVICE_CLASS_MAPPING = {
 }
 
 STATE_CLASS_MAPPING = {
-    "Energy_Today": "total_increasing",
-    "Energy_This_Month": "total_increasing",
-    "Energy_This_Year": "total_increasing",
+    "Energy_Today": "measurement",
+    "Energy_This_Month": "measurement",
+    "Energy_This_Year": "measurement",
     "Energy_Total": "total_increasing",
     "Voltage": "measurement",
     "Current": "measurement",
