@@ -209,8 +209,14 @@ def _fetch_data_sync(config: dict, driver: webdriver.Firefox, force_relogin: boo
                     raise WebDriverException(f"Failed to load URL {data_url} after retries.")
                 time.sleep(4)
                 _LOGGER.debug("Calling WebDriverWait...")
-                WebDriverWait(driver, wait_timeout,poll_frequency=2).until(
-                    EC.presence_of_element_located((By.CSS_SELECTOR, ".el-table__body-wrapper tbody tr"))
+                # Some portal states render an empty table (no <tr>) at night/offline periods.
+                # Wait until the table container or rows/empty-state marker are present.
+                WebDriverWait(driver, wait_timeout, poll_frequency=2).until(
+                    lambda d: (
+                        len(d.find_elements(By.CSS_SELECTOR, ".el-table__body-wrapper tbody tr")) > 0
+                        or len(d.find_elements(By.CSS_SELECTOR, ".el-table__empty-block")) > 0
+                        or len(d.find_elements(By.CSS_SELECTOR, ".el-table__body-wrapper tbody")) > 0
+                    )
                 )
                 _LOGGER.debug("WebDriverWait called successfully.")
 
@@ -223,7 +229,7 @@ def _fetch_data_sync(config: dict, driver: webdriver.Firefox, force_relogin: boo
                 _LOGGER.debug("Found %d rows in the table for device %s.", len(rows), device_alias)
 
                 if not rows:
-                    _LOGGER.warning("No rows found in table for device %s after waiting.", device_alias)
+                    _LOGGER.info("No data rows found for device %s after waiting (portal may be in empty-data state).", device_alias)
                     break
 
                 row = rows[0]
@@ -375,7 +381,7 @@ def _fetch_data_sync(config: dict, driver: webdriver.Firefox, force_relogin: boo
                         _LOGGER.error(f"Page source saved to {filename} for debugging {err_type.lower()}. URL: {current_url}")
                     except Exception as dump_err:
                         _LOGGER.error("Failed to save page source during %s: %s", err_type.lower(), dump_err)
-                    if max_attempts < 2:
+                    if attempt < max_attempts:
                         _LOGGER.info("Quitting driver, waiting 5 seconds, and attempting to re-login due to %s...", err_type.lower())
                         try:
                             _LOGGER.debug("Verifying Webdriver...")
